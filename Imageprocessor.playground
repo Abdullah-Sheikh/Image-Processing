@@ -1,0 +1,85 @@
+//: Playground - noun: a place where people can play
+
+import UIKit
+
+let image = UIImage(named: "sample.png")!
+
+// Process the image!
+var myRGBA = RGBAImage(image : image)!
+
+/*
+ 
+ //--------------------! How to change the single pixel
+ 
+let x = 10
+let y = 10
+
+let index = y * myRGBA.width + x
+
+var pixel = myRGBA.pixels[index]
+
+pixel.red
+pixel.green
+pixel.blue
+
+
+pixel.red = 255
+pixel.green = 0
+pixel.blue = 0
+
+myRGBA.pixels[index] = pixel
+
+let newImage = myRGBA.toUIImage()
+*/
+
+/*
+ 
+ //  Calculate the avg color (Red ,Green ,Blue )
+var totalred = 0
+var totalgreen = 0
+var totalblue = 0
+
+for y in 0..<myRGBA.height{
+    for x in 0..<myRGBA.width {
+        let index = y * myRGBA.width + x
+
+        var pixel = myRGBA.pixels[index]
+        totalred += Int(pixel.red)
+        totalgreen += Int(pixel.green)
+        totalblue += Int(pixel.blue)
+    }
+}
+let count = myRGBA.width * myRGBA.height
+
+let avgred = totalred/count
+let avggreen = totalgreen/count
+let avgblue = totalblue/count
+ */
+
+let avgred = 118
+let avggreen = 98
+let avgblue = 83
+
+for y in 0..<myRGBA.height{
+    for x in 0..<myRGBA.width {
+        let index = y * myRGBA.width + x
+
+        var pixel = myRGBA.pixels[index]
+        let GreenDiff = Int(pixel.green) - avggreen
+        let RedDiff = Int(pixel.red) - avgred
+        if(GreenDiff > 0)
+        {
+            pixel.green = UInt8 (max(0,min(255,avggreen + GreenDiff*2)))
+            myRGBA.pixels[index] = pixel
+        }
+        if(RedDiff > 0)
+        {
+            pixel.red = UInt8 (max(0,min(255,avgred + RedDiff*3)))
+            myRGBA.pixels[index] = pixel
+        }
+    }
+}
+ 
+
+let newImage = myRGBA.toUIImage()
+
